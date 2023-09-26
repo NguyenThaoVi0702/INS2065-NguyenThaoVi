@@ -1,6 +1,6 @@
 # README
 
-## GROUP <add-group-name>
+## GROUP <Group 4>
 
 - Member 1: Nguyễn Thảo Vi 
 - Member 2: Trần Văn Cường
