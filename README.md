@@ -2,10 +2,10 @@
 
 ## GROUP <add-group-name>
 
-- Member 1: <add-name>
-- Member 2: <add-name>
-- Member 3: <add-name>
-- Member 4: <add-name>
+- Member 1: Nguyễn Thảo Vi 
+- Member 2: Trần Văn Cường
+- Member 3: Nguyễn Đức Huy 
+- Member 4: Hoàng Trang My
 
 ## Starting server
 
