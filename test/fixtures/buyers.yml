@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  b_id: MyString
+  b_name: MyString
+  b_dob: 2023-10-03
+
+two:
+  b_id: MyString
+  b_name: MyString
+  b_dob: 2023-10-03
