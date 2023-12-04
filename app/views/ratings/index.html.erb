@@ -1,0 +1,43 @@
+
+
+
+<div class="container mx-auto px-4">
+  <div class="flex items-center justify-between flex-wrap mb-6">
+    <h1 class="text-3xl font-bold">Ratings</h1>
+
+    <%= link_to new_rating_path, class: button_class(theme: "primary") do %>
+    Add New Rating
+    <% end %>
+  </div>
+
+  <table class="table-auto border-collapse border-slate-400 w-full">
+    <thead class="bg-slate-50 dark:bg-slate-700">
+      <tr>
+        
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">User</th>
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Product</th>
+                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Stars rated</th>
+                
+          <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left"></th>
+        
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @ratings.each do |rating| %>
+      <%= content_tag :tr, id: dom_id(rating), class: dom_class(rating) do %>
+      
+
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= rating.user %></td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= rating.product %></td>
+              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= rating.stars_rated %></td>
+      
+      
+        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= link_to 'Show', rating %></td>
+      
+      <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+</div>

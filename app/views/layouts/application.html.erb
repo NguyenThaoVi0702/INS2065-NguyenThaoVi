@@ -12,5 +12,6 @@
     <main class="flex-grow">
       <%= content_for?(:content) ? yield(:content) : yield %>
     </main>
+    <link rel="icon" type="image/png" href="<%= asset_path('gizhub.png') %>">
   </body>
 </html>

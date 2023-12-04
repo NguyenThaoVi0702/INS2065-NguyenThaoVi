@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_17_110402) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_04_042742) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -65,12 +65,50 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_110402) do
     t.index ["subject_id"], name: "index_books_on_subject_id"
   end
 
+  create_table "brands", force: :cascade do |t|
+    t.string "name"
+    t.string "logo"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "buyers", force: :cascade do |t|
     t.string "b_id"
     t.string "b_name"
     t.date "b_dob"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "cart_items", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "cart_id", null: false
+    t.integer "quantity"
+    t.decimal "line_total"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cart_id"], name: "index_cart_items_on_cart_id"
+    t.index ["product_id"], name: "index_cart_items_on_product_id"
+  end
+
+  create_table "carts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.decimal "subtotal"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_carts_on_user_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "product_id", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_comments_on_product_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -82,6 +120,29 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_110402) do
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.bigint "brand_id", null: false
+    t.string "name"
+    t.string "image"
+    t.decimal "price"
+    t.decimal "discount"
+    t.text "description"
+    t.boolean "available"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["brand_id"], name: "index_products_on_brand_id"
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "product_id", null: false
+    t.integer "stars_rated"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_ratings_on_product_id"
+    t.index ["user_id"], name: "index_ratings_on_user_id"
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -109,4 +170,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_110402) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "books", "subjects"
+  add_foreign_key "cart_items", "carts"
+  add_foreign_key "cart_items", "products"
+  add_foreign_key "carts", "users"
+  add_foreign_key "comments", "products"
+  add_foreign_key "comments", "users"
+  add_foreign_key "products", "brands"
+  add_foreign_key "ratings", "products"
+  add_foreign_key "ratings", "users"
 end

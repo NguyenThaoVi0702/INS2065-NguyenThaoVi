@@ -1,0 +1,38 @@
+<%= form_with(model: cart_item) do |form| %>
+<% if cart_item.errors.any? %>
+<div id="error_explanation" class="bg-red-50 p-6 rounded text-red-800">
+  <h2 class="text-lg font-semibold mb-3"><%= pluralize(cart_item.errors.count, "error") %> prohibited this cart_item from being saved:</h2>
+
+  <ul class="list-disc leading-relaxed">
+    <% cart_item.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+  <div class="mb-6">
+        <%= form.label :product_id, class: label_class %>
+          <%= form.text_field :product_id, class: input_class %>
+      </div>
+  <div class="mb-6">
+        <%= form.label :cart_id, class: label_class %>
+          <%= form.text_field :cart_id, class: input_class %>
+      </div>
+  <div class="mb-6">
+        <%= form.label :quantity, class: label_class %>
+          <%= form.number_field :quantity, class: input_class %>
+      </div>
+  <div class="mb-6">
+        <%= form.label :line_total, class: label_class %>
+          <%= form.text_field :line_total, class: input_class %>
+      </div>
+
+<%= form.submit class: button_class(theme: 'primary') %>
+
+<% if cart_item.persisted? %>
+<%= link_to "Cancel", cart_item, class: "text-neutral-700 underline inline-block ml-3" %>
+<% else %>
+<%= link_to "Cancel", cart_items_path, class:  "text-neutral-700 underline inline-block ml-3" %>
+<% end %>
+<% end %>
