@@ -17,7 +17,8 @@
       </div>
   <div class="mb-6">
         <%= form.label :logo, class: label_class %>
-          <%= form.text_field :logo, class: input_class %>
+          <%= form.file_field :logo, class: input_class %>
+          <%= image_tag @brand.logo.url if @brand.logo.present? %>
       </div>
   <div class="mb-6">
         <%= form.label :description, class: label_class %>

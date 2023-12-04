@@ -73,11 +73,10 @@ gem "cssbundling-rails"
 gem "name_of_person"
 gem "sidekiq", "~> 6.5", ">= 6.5.4"
 gem "stripe"
+gem 'carrierwave', '~> 3.0'
 
 gem 'pg', '1.3.5'
 gem "dotenv-rails"
 
 gem 'rails_admin'
-gem "sassc-rails"
-gem "sassc-rails"
 gem "sassc-rails"

@@ -19,7 +19,7 @@
       </li>
       <li>
         <p class="font-semibold">Logo:</p>
-        <p><%= @brand.logo %></p>
+        <p><%= image_tag @brand.logo.url(:square) if @brand.logo.present? %></p>
       </li>
       <li>
         <p class="font-semibold">Description:</p>

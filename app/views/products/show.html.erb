@@ -3,10 +3,10 @@
     <h1 class="flex-1 font-bold text-3xl">Product</h1>
 
     <div class="flex-wrap lg:flex items-center lg:space-x-3">
-      <%= link_to products_path, class: button_class(theme: "transparent") do %>
+      <%= link_to products_path, class: "bg-black text-white px-4 py-2 rounded" do %>
       All Products
       <% end %>
-      <%= link_to edit_product_path(@product), class: button_class(theme:"primary") do %>
+      <%= link_to edit_product_path(@product), class: "bg-black text-white px-4 py-2 rounded" do %>
       Edit
       <% end %>
     </div>
@@ -15,7 +15,7 @@
   <ul class="text-slate-700">
       <li>
         <p class="font-semibold">Brand:</p>
-        <p><%= @product.brand %></p>
+        <p><%= image_tag @product.brand.logo.url(:square) %></p>
       </li>
       <li>
         <p class="font-semibold">Name:</p>
@@ -23,15 +23,15 @@
       </li>
       <li>
         <p class="font-semibold">Image:</p>
-        <p><%= @product.image %></p>
+        <p><%= image_tag @product.image_url if @product.image.present? %></p>
       </li>
       <li>
         <p class="font-semibold">Price:</p>
-        <p><%= @product.price %></p>
+        <p>$ <%= @product.price %></p>
       </li>
       <li>
-        <p class="font-semibold">Discount:</p>
-        <p><%= @product.discount %></p>
+        <p class="font-semibold">Discount price:</p>
+        <p>$ <%= sprintf('%.2f', @product.price * (1 - @product.discount)) %></p>
       </li>
       <li>
         <p class="font-semibold">Description:</p>

@@ -13,7 +13,7 @@
 
   <div class="mb-6">
         <%= form.label :brand_id, class: label_class %>
-          <%= form.text_field :brand_id, class: input_class %>
+        <%= form.select :brand_id, options_from_collection_for_select( Brand.all, 'id', 'name', selected = product.brand_id), class: label_class %>
       </div>
   <div class="mb-6">
         <%= form.label :name, class: label_class %>
@@ -21,7 +21,8 @@
       </div>
   <div class="mb-6">
         <%= form.label :image, class: label_class %>
-          <%= form.text_field :image, class: input_class %>
+          <%= form.file_field :image, class: input_class %>
+          <%= image_tag @product.image_url if @product.image.present? %>
       </div>
   <div class="mb-6">
         <%= form.label :price, class: label_class %>
