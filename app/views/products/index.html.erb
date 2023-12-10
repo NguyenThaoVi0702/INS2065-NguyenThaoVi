@@ -9,26 +9,26 @@
     Add New Product
     <% end %>
   </div>
-<div class="flex">
-  <div class="w-1/3 pr-4">
+<div class="flex bg-white">
+  <div class="w-2/6 pr-4 bg-white">
   <%= search_form_for @q, html: { class: 'mb-4' } do |f| %>
     <div class="mb-4">
-      <%= f.label :name, class: 'block mb-2 text-sm font-semibold text-gray-700' %>
+      <%= f.label :name, class: 'block mb-2 text-sm font-semibold text-gray-700 rounded' %>
       <%= f.text_field :name_cont, class: 'form-input w-full' %>
     </div>
   
     <div class="mb-4">
-      <%= f.label :brand_id, class: 'block mb-2 text-sm font-semibold text-gray-700' %>
+      <%= f.label :brand_id, class: 'block mb-2 text-sm font-semibold text-gray-700 rounded' %>
       <%= f.collection_select(:brand_id, Brand.all, :id, :name, { include_blank: true }, { class: "form-select w-full" }) %>
     </div>
   
     <div class="mb-4 flex justify-between">
       <div class="w-1/2 pr-2">
-        <%= f.label :price, "Price", class: 'block mb-2 text-sm font-semibold text-gray-700' %>
+        <%= f.label :price, "Price", class: 'block mb-2 text-sm font-semibold text-gray-700 rounded' %>
         <%= f.text_field :price_gteq, class: 'form-input w-full' %>
       </div>
       <div class="w-1/2 pl-2">
-        <%= f.label :price, "To", class: 'block mb-2 text-sm font-semibold text-gray-700' %>
+        <%= f.label :price, "To", class: 'block mb-2 text-sm font-semibold text-gray-700 rounded' %>
         <%= f.text_field :price_lteq, class: 'form-input w-full' %>
       </div>
     </div>
@@ -44,49 +44,19 @@
 </div>
   
   
-<div class="w-2/3 pl-4 bg-white">
-  <table class="table-auto border-collapse border-slate-400 w-full">
-    <thead class="bg-slate-50 dark:bg-slate-700">
-      <tr>
-        
-          <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Name</th>
-        
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Brand</th>
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Image</th>
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Original Price</th>
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Price After Discount</th>
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Description</th>
-                  <th class="border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Available</th>
-                
-      </tr>
-    </thead>
+<div class="w-4/6 pl-4 bg-white">
+  <div class="grid grid-cols-3 gap-4">
+  <% @products.each do |product| %>
+    <div class="border border-slate-300 dark:border-slate-600 p-4 text-center flex flex-col">
+      <%= image_tag product.image_url, class: "w-full h-48 object-contain mb-4" %>
+      <h4 class="text-lg font-semibold mb-2"><%= product.name %></h4>
+      <div class="flex-grow"></div>
+      <p class="text-gray-600 mb-2">$ <%= sprintf('%.2f', product.price * (1 - product.discount)) %></p>
+      <a href="<%= product_path(product) %>" class="bg-black text-white px-4 py-2 rounded-full">View Details</a>
+    </div>
+  <% end %>
+</div>
 
-    <tbody>
-      <% @products.each do |product| %>
-      <%= content_tag :tr, id: dom_id(product), class: dom_class(product) do %>
-      
-        <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= link_to product.name, product %></td>
-      
-
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= image_tag product.brand.logo.url(:square) %></td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= image_tag product.image_url %></td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">$ <%= product.price %></td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">$ <%= sprintf('%.2f', product.price * (1 - product.discount)) %></td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400"><%= product.description %></td>
-              <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">
-                <% if product.available %>
-                  ✔
-                <% else %>
-                  ❌
-                <% end %>
-              </td>
-
-      
-      
-      <% end %>
-      <% end %>
-    </tbody>
-  </table>
 </div>
 </div>
 </div>

@@ -1,45 +1,67 @@
 <div class="max-w-3xl mx-auto px-4">
   <div class="flex items-center justify-between">
-    <h1 class="flex-1 font-bold text-3xl">Product</h1>
+    <h1 class="flex-1 font-bold text-3xl">Product Preview</h1>
 
     <div class="flex-wrap lg:flex items-center lg:space-x-3">
       <%= link_to products_path, class: "bg-black text-white px-4 py-2 rounded" do %>
-      All Products
+        All Products
       <% end %>
       <%= link_to edit_product_path(@product), class: "bg-black text-white px-4 py-2 rounded" do %>
-      Edit
+        Edit
       <% end %>
     </div>
   </div>
-
-  <ul class="text-slate-700">
-      <li>
-        <p class="font-semibold">Brand:</p>
-        <p><%= image_tag @product.brand.logo.url(:square) %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Name:</p>
-        <p><%= @product.name %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Image:</p>
-        <p><%= image_tag @product.image_url if @product.image.present? %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Price:</p>
-        <p>$ <%= @product.price %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Discount price:</p>
-        <p>$ <%= sprintf('%.2f', @product.price * (1 - @product.discount)) %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Description:</p>
-        <p><%= @product.description %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Available:</p>
-        <p><%= @product.available %></p>
-      </li>
-  </ul>
+  <br>
+  <div class="flex bg-white">
+    <div class="w-1/2 flex flex-col items-center justify-center pr-4">
+      <p><%= image_tag @product.image_url, class: "max-w-full h-auto" if @product.image.present? %></p>
+      <p class="mt-4">
+        <%= button_to '', method: :post, class: "bg-black text-white px-4 py-2 rounded" do %>
+          🛒 Add to Cart
+        <% end %>
+      </p>
+    </div>
+    <div class="w-1/2 pl-4">
+      <ul class="text-slate-700">
+        <li>
+          <p><%= image_tag @product.brand.logo.url(:square), class: "brand-image" %></p>
+        </li>
+        <br>
+        <li>
+          <p class="text-4xl font-bold"><%= @product.name %></p>
+        </li>
+        <br>
+        <li>
+          <p class="font-semibold inline-block">Available:</p>
+          <% if @product.available %>
+            <p class="inline-block">✅</p>
+          <% else %>
+            <p class="inline-block">❌</p>
+          <% end %>
+        </li>
+        <br>
+        <li>
+          <% if @product.discount.present? %>
+            <p>
+              <span class="text-gray-500 line-through text-xl">$ <%= @product.price %></span>
+              <span class="text-red-500 text-2xl font-bold">$ <%= sprintf('%.2f', @product.price * (1 - @product.discount)) %></span>
+            </p>
+          <% else %>
+            <p class="text-gray-500 line-through text-xl">$ <%= @product.price %></p>
+          <% end %>
+        </li>
+        <br>
+        <li>
+          <p class="font-semibold">Description:</p>
+          <p class="text-justify"><%= @product.description %></p>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
+
+<style>
+  .brand-image {
+    width: 50px; 
+  }
+</style>
