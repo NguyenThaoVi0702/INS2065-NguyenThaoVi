@@ -41,6 +41,25 @@
         </li>
         <br>
         <li>
+          <p>Comment</p>
+          <% @product.comments.each do |comment| %>
+        <li><%= comment.content %> by <%= comment.user.name %></li>
+        <% end %>
+
+
+
+        </li><br>
+        <li>
+          <p>Rating</p>
+          <% rating.stars.times do %>
+      <%= image_tag("star.png", width: 20, height: 20) %>
+      
+    <% end %>
+    stars by <%= rating.user.name %>
+<% end %>
+        </li>
+        <br>
+        <li>
           <% if @product.discount.present? %>
             <p>
               <span class="text-gray-500 line-through text-xl">$ <%= @product.price %></span>
