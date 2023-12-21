@@ -81,3 +81,5 @@ gem "dotenv-rails"
 
 gem 'rails_admin'
 gem "sassc-rails"
+
+gem "webpacker", "~> 5.4"
