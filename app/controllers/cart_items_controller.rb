@@ -36,25 +36,25 @@ class CartItemsController < ApplicationController
 
   # PATCH/PUT /cart_items/1 or /cart_items/1.json
   def update
+    @cart_item = CartItem.find(params[:id])
     respond_to do |format|
       if @cart_item.update(cart_item_params)
-        format.html { redirect_to cart_item_url(@cart_item), notice: "Cart item was successfully updated." }
-        format.json { render :show, status: :ok, location: @cart_item }
+        format.html { redirect_to cart_path(@cart_item.cart), notice: 'Quantity updated successfully!' }
+        format.json { render :show, status: :ok, location: @cart_item.cart }
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :edit, alert: 'There was an error updating the quantity.', status: :unprocessable_entity }
         format.json { render json: @cart_item.errors, status: :unprocessable_entity }
       end
     end
   end
+  
 
   # DELETE /cart_items/1 or /cart_items/1.json
   def destroy
-    @cart_item.destroy
-
-    respond_to do |format|
-      format.html { redirect_to cart_items_url, notice: "Cart item was successfully destroyed." }
-      format.json { head :no_content }
-    end
+      @cart_item = CartItem.find(params[:id])
+      @cart = @cart_item.cart
+      @cart_item.destroy
+      redirect_to cart_path(@cart), notice: 'Item removed from cart successfully!'
   end
 
   private

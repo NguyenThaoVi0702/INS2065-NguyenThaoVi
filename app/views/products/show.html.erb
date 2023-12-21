@@ -6,20 +6,23 @@
       <%= link_to products_path, class: "bg-black text-white px-4 py-2 rounded" do %>
         All Products
       <% end %>
-      <%= link_to edit_product_path(@product), class: "bg-black text-white px-4 py-2 rounded" do %>
-        Edit
+      <% if current_user.admin? %>
+        <%= link_to edit_product_path(@product), class: "bg-black text-white px-4 py-2 rounded" do %>
+          Edit
+        <% end %>
       <% end %>
     </div>
   </div>
   <br>
   <div class="flex bg-white">
-    <div class="w-1/2 flex flex-col items-center justify-center pr-4">
+    <div class="w-1/2 flex flex-col items-center justify-center pr-4" >
       <p><%= image_tag @product.image_url, class: "max-w-full h-auto" if @product.image.present? %></p>
-      <p class="mt-4">
-        <%= button_to '', method: :post, class: "bg-black text-white px-4 py-2 rounded" do %>
-          🛒 Add to Cart
-        <% end %>
-      </p>
+      <% unless current_user.admin? %>
+        <p class="mt-4">
+          <%= button_to '🛒 Add to Cart', add_to_cart_path(@product), method: :post, class: "bg-black text-white px-4 py-2 rounded" %>
+        </p>
+      <% end %>
+
     </div>
     <div class="w-1/2 pl-4">
       <ul class="text-slate-700">
@@ -41,25 +44,6 @@
         </li>
         <br>
         <li>
-          <p>Comment</p>
-          <% @product.comments.each do |comment| %>
-        <li><%= comment.content %> by <%= comment.user.name %></li>
-        <% end %>
-
-
-
-        </li><br>
-        <li>
-          <p>Rating</p>
-          <% rating.stars.times do %>
-      <%= image_tag("star.png", width: 20, height: 20) %>
-      
-    <% end %>
-    stars by <%= rating.user.name %>
-<% end %>
-        </li>
-        <br>
-        <li>
           <% if @product.discount.present? %>
             <p>
               <span class="text-gray-500 line-through text-xl">$ <%= @product.price %></span>
@@ -77,7 +61,52 @@
       </ul>
     </div>
   </div>
+
+  <br>
+
+  <!-- Display average ratings -->
+<div class="mb-4" style="background-color: white; padding: 20px; text-align: center; border-radius: 25px; border: 2px solid">
+  <h2 class="font-bold text-2xl">Average Ratings</h2>
+  <p style="font-weight: bold; color: #FFA500;">⭐ <%= @product.ratings.average(:stars_rated) %></p>
 </div>
+
+  <!-- Display product comments -->
+<div class="mb-4" style="background-color: white; padding: 20px; border-radius: 25px; border: 2px solid">
+  <h2 class="font-bold text-2xl">Product Comments</h2>
+  <% @product.comments.each do |comment| %>
+    <div class="border border-gray-300 rounded p-2 mt-2">
+      <p><%= comment.content %></p>
+      <p>Posted by: <%= comment.user.email %></p>
+    </div>
+  <% end %>
+</div>
+
+
+<!-- Add new comment and rating -->
+<% if user_signed_in? %>
+  <div class="mb-4" style="background-color: white; padding: 20px; border-radius: 25px; border: 2px solid">
+    <h2 class="font-bold text-2xl">Add Comment and Rating</h2>
+    <%= form_with(model: [@product, Comment.new], url: product_comments_path(product_id: @product.id)) do |form| %>
+      <div class="mt-2">
+        <%= form.text_area :content, class: "border border-gray-300 rounded p-2 w-full", placeholder: "Enter your comment" %>
+      </div>
+      <div class="mt-2">
+        <div class="star-rating">
+        <% (1..5).each do |i| %>
+          <%= form.radio_button :stars_rated, i, id: "star#{i}" %>
+          <label for="star<%= i %>">⭐</label>
+        <% end %>
+      </div>
+      </div>
+      <div class="mt-4">
+        <%= form.submit "Submit", class: "bg-black text-white px-4 py-2 rounded" %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+
+
 
 <style>
   .brand-image {

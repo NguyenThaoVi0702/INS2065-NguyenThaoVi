@@ -1,29 +1,101 @@
-<div class="max-w-3xl mx-auto px-4">
-  <div class="flex items-center justify-between">
-    <h1 class="flex-1 font-bold text-3xl">Cart</h1>
-
-    <div class="flex-wrap lg:flex items-center lg:space-x-3">
-      <%= link_to carts_path, class: button_class(theme: "transparent") do %>
-      All Carts
-      <% end %>
-      <%= link_to edit_cart_path(@cart), class: button_class(theme:"primary") do %>
-      Edit
-      <% end %>
+<% if current_user.admin? %>
+<div class="flex flex-col items-center">
+  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+      <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-center text-lg font-medium text-gray-500 uppercase tracking-wider">
+                User Name
+              </th>
+              <th scope="col" class="px-6 py-3 text-center text-lg font-medium text-gray-500 uppercase tracking-wider">
+                User Email
+              </th>
+              <th scope="col" class="px-6 py-3 text-center text-lg font-medium text-gray-500 uppercase tracking-wider">
+                Cart Subtotal
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <% @carts.each do |cart| %>
+              <% unless cart.user.admin? %>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <%= cart.user.name %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <%= cart.user.email %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <%= number_to_currency(cart.subtotal) %>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-
-  <ul class="text-slate-700">
-      <li>
-        <p class="font-semibold">User:</p>
-        <p><%= @cart.user %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Subtotal:</p>
-        <p><%= @cart.subtotal %></p>
-      </li>
-      <li>
-        <p class="font-semibold">Status:</p>
-        <p><%= @cart.status %></p>
-      </li>
-  </ul>
 </div>
+
+<% else %>
+<div class="flex flex-col items-center">
+  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+      <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-center text-lg font-medium text-gray-500 uppercase tracking-wider">
+                Product Name
+              </th>
+              <th scope="col" class="px-6 py-3 text-center text-lg font-medium text-gray-500 uppercase tracking-wider">
+                Product Price
+              </th>
+              <th scope="col" class="px-6 py-3 text-center text-lg font-medium text-gray-500 uppercase tracking-wider">
+                Quantity
+              </th>
+              <th scope="col" class="px-6 py-3 text-center text-lg font-medium text-gray-500 uppercase tracking-wider">
+                Line Total
+              </th>
+              <th scope="col" class="relative px-6 py-3">
+                <span class="sr-only">Delete</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <% @cart_items.each do |item| %>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-center">
+                  <%= item.product.name %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-center">
+                  <%= number_to_currency(item.product.price) %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-center">
+                  <%= form_with(model: [item], url: cart_item_path(item), method: :patch, remote: true) do |f| %>
+                    <%= f.number_field :quantity, value: item.quantity, min: 1, class: "quantity-input" %>
+                    <%= f.submit 'Update Quantity', class: "bg-black text-white px-4 py-2 rounded"%>
+                  <% end %>                
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-center">
+                  <%= number_to_currency(item.product.price * item.quantity) %>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <%= button_to 'Delete', cart_item_path(item), method: :delete, data: { confirm: 'Are you sure?' }, class: "text-indigo-600 hover:text-indigo-900" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+</br>
+<p class="text-center font-bold text-2xl">Subtotal</p>
+<p class="text-center font-bold text-red-500 text-2xl"><%= number_to_currency(@cart_items.sum { |item| item.product.price * item.quantity }) %></p>
+<% end %>

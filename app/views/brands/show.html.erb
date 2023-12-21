@@ -3,11 +3,13 @@
     <h1 class="flex-1 font-bold text-3xl">Brand</h1>
 
     <div class="flex-wrap lg:flex items-center lg:space-x-3">
-      <%= link_to brands_path, class: button_class(theme: "transparent") do %>
+      <%= link_to brands_path, class: "bg-black text-white px-4 py-2 rounded" do %>
       All Brands
       <% end %>
-      <%= link_to edit_brand_path(@brand), class: button_class(theme:"primary") do %>
-      Edit
+      <% if current_user.admin? %>
+        <%= link_to edit_brand_path(@brand), class: "bg-black text-white px-4 py-2 rounded" do %>
+        Edit
+        <% end %>
       <% end %>
     </div>
   </div>

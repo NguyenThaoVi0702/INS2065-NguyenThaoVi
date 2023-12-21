@@ -16,10 +16,19 @@
     <div class="lg:flex-grow">
       <%# link_to "Phone", "#", class: "p-3 hover:bg-gray-50 transition ease duration-300 rounded-lg text-center focus:bg-gray-100 lg:inline-block block" %>
     </div>
-    <div class="items-center block w-full mt-2 text-center lg:flex lg:flex-row lg:flex-1 lg:mt-0 lg:text-left lg:justify-end">
+    <div class="items-center block w-full mt-2 text-center lg:flex lg:flex-row lg:mt-0 lg:text-left lg:justify-end">
       <div><%# More links can go here %>
-      <%= link_to "All Products", "/products", class: "p-3 hover:bg-gray-50 transition ease duration-300 rounded-lg text-center focus:bg-gray-100 lg:inline-block block", style: "color: white;", onmouseover: "this.style.color='black'", onmouseout: "this.style.color='white'" %>
 
+      <% if user_signed_in? %>
+        <%= link_to '🛒', cart_path(current_user.cart), class: "p-3 hover:bg-gray-50 transition ease duration-300 rounded-lg text-center focus:bg-gray-100 lg:inline-block block", style: "color: white;", onmouseover: "this.style.color='black'", onmouseout: "this.style.color='white'" %>
+        <% end %>
+      <%= link_to "Products", "/products", class: "p-3 hover:bg-gray-50 transition ease duration-300 rounded-lg text-center focus:bg-gray-100 lg:inline-block block", style: "color: white;", onmouseover: "this.style.color='black'", onmouseout: "this.style.color='white'" %>
+      <%= link_to "Brands", "/brands", class: "p-3 hover:bg-gray-50 transition ease duration-300 rounded-lg text-center focus:bg-gray-100 lg:inline-block block", style: "color: white;", onmouseover: "this.style.color='black'", onmouseout: "this.style.color='white'" %>
+      
+      <% if current_user && current_user.admin? %>
+      <%= link_to "Comments", "/comments", class: "p-3 hover:bg-gray-50 transition ease duration-300 rounded-lg text-center focus:bg-gray-100 lg:inline-block block", style: "color: white;", onmouseover: "this.style.color='black'", onmouseout: "this.style.color='white'" %>
+      <%= link_to "Ratings", "/ratings", class: "p-3 hover:bg-gray-50 transition ease duration-300 rounded-lg text-center focus:bg-gray-100 lg:inline-block block", style: "color: white;", onmouseover: "this.style.color='black'", onmouseout: "this.style.color='white'" %>
+      <% end %>
 
 
       </div>

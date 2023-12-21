@@ -58,6 +58,26 @@ class ProductsController < ApplicationController
     end
   end
 
+  def add_to_cart
+    @cart_item = current_user.cart.cart_items.find_by(product_id: params[:id])
+    if @cart_item
+      @cart_item.quantity += 1
+    else
+      @cart_item = current_user.cart.cart_items.new(product_id: params[:id], quantity: 1)
+    end
+  
+    if @cart_item.save
+      # If the cart item is saved successfully, redirect the user to their cart page
+      redirect_to cart_path(current_user.cart), notice: 'Product added to cart successfully!'
+    else
+      # If there is an error saving the cart item, redirect the user back to the product page
+      redirect_to product_path(params[:id]), alert: 'There was an error adding the product to the cart.'
+    end
+  end
+  
+  
+  
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
@@ -68,4 +88,11 @@ class ProductsController < ApplicationController
     def product_params
       params.require(:product).permit(:brand_id, :name, :image, :price, :discount, :description, :available)
     end
+
+    def show
+      @product = Product.find(params[:id])
+      @comment = Comment.new(user: current_user, product: @product)
+    end
+
+
 end

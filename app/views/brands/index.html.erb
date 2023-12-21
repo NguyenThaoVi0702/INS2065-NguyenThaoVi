@@ -5,8 +5,10 @@
   <div class="flex items-center justify-between flex-wrap mb-6">
     <h1 class="text-3xl font-bold">Brands</h1>
 
-    <%= link_to new_brand_path, class: button_class(theme: "primary") do %>
-    Add New Brand
+    <% if current_user.admin? %>
+      <%= link_to new_brand_path, class: "bg-black text-white px-4 py-2 rounded" do %>
+      Add New Brand
+      <% end %>
     <% end %>
   </div>
 

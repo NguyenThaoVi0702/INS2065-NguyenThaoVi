@@ -3,11 +3,19 @@ class RatingsController < ApplicationController
 
   # GET /ratings or /ratings.json
   def index
+    unless current_user.admin?
+      flash[:alert] = "You are not authorized to access this page."
+      redirect_to root_path
+    end
     @ratings = Rating.all
   end
 
   # GET /ratings/1 or /ratings/1.json
   def show
+    unless current_user.admin?
+      flash[:alert] = "You are not authorized to access this page."
+      redirect_to root_path
+    end
   end
 
   # GET /ratings/new
@@ -17,6 +25,10 @@ class RatingsController < ApplicationController
 
   # GET /ratings/1/edit
   def edit
+    unless current_user.admin?
+      flash[:alert] = "You are not authorized to access this page."
+      redirect_to root_path
+    end
   end
 
   # POST /ratings or /ratings.json

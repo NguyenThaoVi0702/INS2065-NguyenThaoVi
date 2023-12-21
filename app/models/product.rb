@@ -2,7 +2,8 @@ class Product < ApplicationRecord
   belongs_to :brand
   has_many :ratings
   has_many :comments
-
+  has_many :cart_items
+  
   #upload image
   mount_uploader :image, ImageUploader
 

@@ -1,12 +1,10 @@
-
-
-
 <div class="container mx-auto px-4">
   <div class="flex items-center justify-between flex-wrap mb-6">
     <h1 class="text-3xl font-bold">Comments</h1>
-
-    <%= link_to new_comment_path, class: button_class(theme: "primary") do %>
-    Add New Comment
+    <% if current_user.admin? %>
+      <%= link_to new_comment_path, class: "bg-black text-white px-4 py-2 rounded" do %>
+      Add New Comment
+      <% end %>
     <% end %>
   </div>
 

@@ -6,10 +6,15 @@ class CartsController < ApplicationController
     @carts = Cart.all
   end
 
-  # GET /carts/1 or /carts/1.json
   def show
+    if current_user.admin?
+      @carts = Cart.all
+    else
+      @cart = current_user.cart
+      @cart_items = @cart.cart_items.includes(:product) 
+    end
   end
-
+  
   # GET /carts/new
   def new
     @cart = Cart.new
@@ -56,6 +61,7 @@ class CartsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
 
   private
     # Use callbacks to share common setup or constraints between actions.
