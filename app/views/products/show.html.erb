@@ -1,5 +1,9 @@
+
+
 <div class="max-w-3xl mx-auto px-4">
+
   <div class="flex items-center justify-between">
+
     <h1 class="flex-1 font-bold text-3xl">Product Preview</h1>
 
     <div class="flex-wrap lg:flex items-center lg:space-x-3">
@@ -41,24 +45,49 @@
         </li>
         <br>
         <li>
-          <p>Comment</p>
-          <% @product.comments.each do |comment| %>
-        <li><%= comment.content %> by <%= comment.user.name %></li>
-        <% end %>
-
+        
+          <%= form_for([@product, Comment.new]) do |f| %>
+  <%= f.label :content, "Write a comment:" %>
+  <%= f.text_area :content %>
+ 
+<% end %>
 
 
         </li><br>
+        
+
         <li>
           <p>Rating</p>
-          <% rating.stars.times do %>
-      <%= image_tag("star.png", width: 20, height: 20) %>
+
+         <div class="rating">
+  <span class="star" data-value="1">☆</span>
+  <span class="star" data-value="2">☆</span>
+  <span class="star" data-value="3">☆</span>
+  <span class="star" data-value="4">☆</span>
+  <span class="star" data-value="5">☆</span>
+</div>
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function() {
+  const stars = document.querySelectorAll(".star");
+  stars.forEach(star => {
+    star.addEventListener("click", function() {
+      const value = parseInt(this.getAttribute("data-value"));
+      stars.forEach((s, index) => {
+        if (index < value) {
+          s.style.color = "#ffd700"; // Màu vàng khi click
+        } else {
+          s.style.color = "#ffffff"; // Màu trắng cho những sao còn lại
+        }
+      });
+      // Có thể thêm logic khác ở đây, ví dụ như gửi đánh giá lên server
+    });
+  });
+});
       
-    <% end %>
-    stars by <%= rating.user.name %>
-<% end %>
-        </li>
-        <br>
+    </script>
+          
+        </li><br>
+        
         <li>
           <% if @product.discount.present? %>
             <p>

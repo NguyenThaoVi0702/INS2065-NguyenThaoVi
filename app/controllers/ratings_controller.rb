@@ -1,4 +1,4 @@
-class RatingsController < ApplicationController
+    class RatingsController < ApplicationController
   before_action :set_rating, only: %i[ show edit update destroy ]
 
   # GET /ratings or /ratings.json
@@ -33,6 +33,23 @@ class RatingsController < ApplicationController
       end
     end
   end
+
+
+def create
+  @product = Product.find(params[:product_id])
+  @rating = @product.Rating.new(rating_params)
+  if @rating.save
+    # Xử lý khi đánh giá được lưu thành công
+  else
+    # Xử lý khi có lỗi xảy ra
+  end
+end
+
+private
+
+def rating_params
+  params.require(:rating).permit(:stars_rated) # Đảm bảo chỉ cho phép trường :stars được chấp nhận
+end
 
   # PATCH/PUT /ratings/1 or /ratings/1.json
   def update
